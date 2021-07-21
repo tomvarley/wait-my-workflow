@@ -35,7 +35,8 @@ export const poll = async (options: Options): Promise<string> => {
 			`Retrieving check runs named ${checkName} on ${owner}/${repo}@${ref}...`
 		);
 
-		await wait(intervalSeconds * 1000);
+		log(`${checkName} waiting`);
+		await wait(intervalSeconds * 10000);
 		if(first){
 			log(`${checkName} waiting`);
 			await wait(intervalSeconds * 1000);
