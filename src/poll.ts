@@ -27,6 +27,7 @@ export const poll = async (options: Options): Promise<string> => {
 
 	let now = new Date().getTime();
 	let deadline = now + timeoutSeconds * 1000;
+	let first = true
 
 	while (now <= deadline) {
 		log('-----------------');
@@ -34,8 +35,7 @@ export const poll = async (options: Options): Promise<string> => {
 			`Retrieving check runs named ${checkName} on ${owner}/${repo}@${ref}...`
 		);
 
-		let first = true
-
+		await wait(intervalSeconds * 1000);
 		if(first){
 			log(`${checkName} waiting`);
 			await wait(intervalSeconds * 1000);
