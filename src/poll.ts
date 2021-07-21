@@ -53,23 +53,22 @@ export const poll = async (options: Options): Promise<string> => {
 			return 'not found';
 		}
 
-		if (check.find(checkRun => checkRun.status === 'queued')) {
+		const checkRun = check[0]
+
+		if (checkRun.status === 'queued') {
 			log(`Found a ${checkName} job in queue`);
 			deadline = now + timeoutSeconds * 1000;
 		}
 
-		if (check.find(checkRun => checkRun.status === 'in_progress')) {
+		if (checkRun.status === 'in_progress') {
 			log(`Found a ${checkName} job in progress`);
 		}
 
-		const completedCheck = result.data.check_runs.find(
-			checkRun => checkRun.status === 'completed'
-		);
-		if (completedCheck) {
+		if (checkRun.status === 'completed') {
 			log(
-				`Found a completed check with id ${completedCheck.id} and conclusion ${completedCheck.conclusion}`
+				`Found a completed check with id ${checkRun.id} and conclusion ${checkRun.conclusion}`
 			);
-			return completedCheck.conclusion;
+			return checkRun.conclusion;
 		}
 
 		log(
