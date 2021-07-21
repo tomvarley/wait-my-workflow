@@ -34,6 +34,14 @@ export const poll = async (options: Options): Promise<string> => {
 			`Retrieving check runs named ${checkName} on ${owner}/${repo}@${ref}...`
 		);
 
+		let first = true
+
+		if(first){
+			log(`${checkName} waiting`);
+			await wait(intervalSeconds * 1000);
+			first = false;
+		}
+
 		const result = await client.checks.listForRef({
 			// eslint-disable-next-line camelcase
 			check_name: checkName,
@@ -45,6 +53,8 @@ export const poll = async (options: Options): Promise<string> => {
 		log(
 			`Retrieved ${result.data.check_runs.length} check runs named ${checkName}`
 		);
+
+
 
 		const check = result.data.check_runs;
 
